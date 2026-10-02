@@ -740,7 +740,7 @@
   function money(n){return new Intl.NumberFormat('zh-TW',{style:'currency',currency:'TWD',maximumFractionDigits:0}).format(n||0)}
   function methodName(k){return ({cash:'現金・臺銀',visa:'Visa',mc:'Mastercard',jcb:'JCB'})[k]||k}
   function settle(net){let debtors=[],creditors=[]; people.forEach(p=>{if(net[p]<-0.5)debtors.push([p,-net[p]]); if(net[p]>0.5)creditors.push([p,net[p]])}); let out=[]; let i=0,j=0; while(i<debtors.length&&j<creditors.length){let x=Math.min(debtors[i][1],creditors[j][1]);out.push(`${debtors[i][0]} → ${creditors[j][0]} ${money(x)}`);debtors[i][1]-=x;creditors[j][1]-=x;if(debtors[i][1]<.5)i++;if(creditors[j][1]<.5)j++;} return out}
-  const syncUrlEl=document.getElementById('syncUrl'), syncStatus=document.getElementById('syncStatus'); syncUrlEl.value=localStorage.getItem(syncKey)||'https://script.google.com/macros/s/AKfycbykStsGMUlc-KcwexWrCHATktdKWl5sKa92ASXsmTZdk34w9EQMN6xhbOhbxGuYhzRxjQ/exec';
+  const syncUrlEl=document.getElementById('syncUrl'), syncStatus=document.getElementById('syncStatus'); const CLOUD_SYNC_URL='https://script.google.com/macros/s/AKfycbykStsGMUlc-KcwexWrCHATktdKWl5sKa92ASXsmTZdk34w9EQMN6xhbOhbxGuYhzRxjQ/exec'; syncUrlEl.value=CLOUD_SYNC_URL; localStorage.setItem(syncKey,CLOUD_SYNC_URL);
   function uid(){return (crypto.randomUUID?crypto.randomUUID():Date.now()+'-'+Math.random().toString(16).slice(2))}
   function setSyncStatus(text,state=''){syncStatus.innerHTML=`<span class="sync-dot ${state}"></span>${text}`}
   function syncErrorText(err){const msg=String(err&&err.message?err.message:err||'未知錯誤');console.error('Sync detail:',msg,navigator.userAgent);return '同步失敗：'+msg}
