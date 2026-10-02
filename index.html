@@ -196,19 +196,22 @@
   .map-actions .parking-link{margin-top:0;padding:4px 7px;font-size:9.5px;white-space:nowrap;}
   .split-card .map-icon{position:absolute;right:14px;top:14px;width:46px;height:46px;font-size:23px;}
   .split-card.has-map{padding-right:76px;}
-  /* Day 3 分流：兩條連續虛線，各自穿過 A/B 圓點正中心 */
-  .split-wrap{position:relative;margin:2px 0 0;padding:0 0 42px 34px;}
+  /* Day 3 分流：主線(A)與 B 線分開後再合流；所有線穿過圓點正中心 */
+  .split-wrap{position:relative;margin:2px 0 0;padding:42px 0 42px 34px;}
+  /* A 線就是全頁主時間軸，x = 8px，與其他天/一般 stop 完全相同 */
+  .split-wrap::before{content:"";position:absolute;left:8px;top:0;bottom:0;width:1px;background:repeating-linear-gradient(180deg,var(--line) 0 6px,transparent 6px 11px);z-index:0;}
   .split-grid{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:32px;}
-  .split-grid::before,.split-grid::after{content:"";position:absolute;top:-42px;bottom:-42px;width:1px;background:repeating-linear-gradient(180deg,var(--line) 0 6px,transparent 6px 11px);z-index:0;}
-  .split-grid::before{left:-26px;}
-  .split-grid::after{left:calc(50% + 16px);}
+  /* B 分支：上方從 A 分出、垂直穿過 B 圓心、下方再合回 A */
+  .split-grid::after{content:"";position:absolute;left:-26px;right:50%;top:-42px;bottom:-42px;border-top:1px dashed var(--line);border-right:1px dashed var(--line);border-bottom:1px dashed var(--line);pointer-events:none;z-index:0;}
   .split-card{position:relative;z-index:1;border:1px solid var(--line);background:var(--paper-card);padding:18px 18px 16px;border-radius:2px;}
   .split-card::before{content:"";position:absolute;top:50%;width:9px;height:9px;transform:translate(-50%,-50%);border-radius:50%;background:var(--sea);border:2px solid var(--paper);box-shadow:0 0 0 1px var(--sea);z-index:3;}
+  /* A 圓心 global x=8px：grid 起點 34px，因此 left=-26px */
   .split-card:first-child::before{left:-26px;}
+  /* B 圓心 = grid 50%；第二欄起點為 50%+16px，因此 left=-16px */
   .split-card:nth-child(2)::before{left:-16px;}
   .split-card .time{margin-bottom:5px}.split-card h4{margin:0 0 6px;font-size:16px}.split-card p{margin:0;color:var(--ink-soft);font-size:13.5px}
   .split-card .map-icon{position:absolute;right:14px;top:14px;width:46px;height:46px;font-size:23px}.split-card.has-map{padding-right:76px}
-  @media(max-width:640px){.stop-row{grid-template-columns:minmax(0,1fr) 48px}.map-icon{width:44px;height:44px;font-size:23px}.split-wrap{padding-left:34px}.split-grid{grid-template-columns:1fr;gap:14px}.split-grid::after{display:none}.split-grid::before{left:-26px}.split-card:first-child::before,.split-card:nth-child(2)::before{left:-26px}}
+  @media(max-width:640px){.stop-row{grid-template-columns:minmax(0,1fr) 48px}.map-icon{width:44px;height:44px;font-size:23px}.split-wrap{padding:30px 0 30px 34px}.split-grid{grid-template-columns:1fr;gap:14px}.split-grid::after{display:none}.split-card:first-child::before,.split-card:nth-child(2)::before{left:-26px}}
 
   /* ---------- flight tickets ---------- */
   .flight-section-title{display:flex;align-items:center;justify-content:space-between;gap:18px;margin:34px 0 14px;}
