@@ -164,13 +164,13 @@
 
   .trail{position:relative; padding-left:34px;}
   .trail::before{
-    content:""; position:absolute; left:8px; top:6px; bottom:6px; width:1px;
+    content:""; position:absolute; left:8px; top:0; bottom:0; width:1px;
     background:repeating-linear-gradient(180deg, var(--line) 0 6px, transparent 6px 11px);
   }
   .stop{position:relative; padding-bottom:30px;}
   .stop:last-child{padding-bottom:0;}
   .stop::before{
-    content:""; position:absolute; left:-34px; top:4px; width:9px; height:9px;
+    content:""; position:absolute; left:-32.5px; top:4px; width:9px; height:9px;
     border-radius:50%; background:var(--forest); border:2px solid var(--paper);
     box-shadow:0 0 0 1px var(--forest);
   }
@@ -196,24 +196,19 @@
   .map-actions .parking-link{margin-top:0;padding:4px 7px;font-size:9.5px;white-space:nowrap;}
   .split-card .map-icon{position:absolute;right:14px;top:14px;width:46px;height:46px;font-size:23px;}
   .split-card.has-map{padding-right:76px;}
-  /* Day 3 A/B 分流：所有虛線都穿過圓點中心 */
-  .split-wrap{position:relative;margin:2px 0 0;padding:0 0 42px 34px;--axis-x:8px;--dot:9px;--dot-outer:13px;}
-  .split-wrap::before{content:"";position:absolute;left:var(--axis-x);top:0;bottom:0;width:1px;background:repeating-linear-gradient(180deg,var(--line) 0 6px,transparent 6px 11px);}
+  /* Day 3 分流：兩條連續虛線，各自穿過 A/B 圓點正中心 */
+  .split-wrap{position:relative;margin:2px 0 0;padding:0 0 42px 34px;}
   .split-grid{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:32px;}
-  /* 水平分岔線：主軸圓心 -> B 組圓心 */
-  .split-grid::before{content:"";position:absolute;left:-26px;right:50%;top:50%;height:1px;background:repeating-linear-gradient(90deg,var(--line) 0 6px,transparent 6px 11px);z-index:0;}
+  .split-grid::before,.split-grid::after{content:"";position:absolute;top:-42px;bottom:-42px;width:1px;background:repeating-linear-gradient(180deg,var(--line) 0 6px,transparent 6px 11px);z-index:0;}
+  .split-grid::before{left:-26px;}
+  .split-grid::after{left:calc(50% + 16px);}
   .split-card{position:relative;z-index:1;border:1px solid var(--line);background:var(--paper-card);padding:18px 18px 16px;border-radius:2px;}
   .split-card::before{content:"";position:absolute;top:50%;width:9px;height:9px;transform:translate(-50%,-50%);border-radius:50%;background:var(--sea);border:2px solid var(--paper);box-shadow:0 0 0 1px var(--sea);z-index:3;}
-  /* A 點中心就是主時間軸 x=8px；卡片起點相對 grid 為 0，主軸為 -26px */
   .split-card:first-child::before{left:-26px;}
-  /* B 點中心固定在兩欄正中央的分岔軸，不進入 A/B 卡片 */
   .split-card:nth-child(2)::before{left:-16px;}
-  /* B 組垂直支線由圓心向下，再於底部水平回到主軸；同樣使用原本 dashed 節奏 */
-  .split-card:nth-child(2)::after{content:"";position:absolute;left:-16px;top:50%;bottom:-42px;width:1px;background:repeating-linear-gradient(180deg,var(--line) 0 6px,transparent 6px 11px);z-index:0;}
-  .split-grid::after{content:"";position:absolute;left:-26px;right:50%;bottom:-42px;height:1px;background:repeating-linear-gradient(90deg,var(--line) 0 6px,transparent 6px 11px);z-index:0;}
   .split-card .time{margin-bottom:5px}.split-card h4{margin:0 0 6px;font-size:16px}.split-card p{margin:0;color:var(--ink-soft);font-size:13.5px}
   .split-card .map-icon{position:absolute;right:14px;top:14px;width:46px;height:46px;font-size:23px}.split-card.has-map{padding-right:76px}
-  @media(max-width:640px){.stop-row{grid-template-columns:minmax(0,1fr) 48px}.map-icon{width:44px;height:44px;font-size:23px}.split-wrap{padding-left:34px}.split-grid{grid-template-columns:1fr;gap:14px}.split-grid::before,.split-grid::after,.split-card:nth-child(2)::after{display:none}.split-card:first-child::before,.split-card:nth-child(2)::before{left:-26px}.split-wrap::before{display:block}}
+  @media(max-width:640px){.stop-row{grid-template-columns:minmax(0,1fr) 48px}.map-icon{width:44px;height:44px;font-size:23px}.split-wrap{padding-left:34px}.split-grid{grid-template-columns:1fr;gap:14px}.split-grid::after{display:none}.split-grid::before{left:-26px}.split-card:first-child::before,.split-card:nth-child(2)::before{left:-26px}}
 
   /* ---------- flight tickets ---------- */
   .flight-section-title{display:flex;align-items:center;justify-content:space-between;gap:18px;margin:34px 0 14px;}
@@ -292,7 +287,6 @@
 
   /* ---------- map ---------- */
   .map-wrap{position:relative;border:1px solid var(--line);background:var(--paper-card);padding:12px;margin-bottom:28px;overflow:hidden;}
-  .map-kanji-fix{position:absolute;left:14.2%;top:10.5%;z-index:2;font-family:'Shippori Mincho',serif;font-size:clamp(22px,3.1vw,46px);font-weight:700;line-height:1;background:#fbf4e5;padding:0 .08em;transform:rotate(-3deg);color:#3a2d20;}
   .illustrated-map{display:block;width:100%;height:auto;border-radius:2px;}
   .map-list{display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--line); border:1px solid var(--line);}
   .map-list a.spot{
@@ -676,7 +670,7 @@
     </div>
 
     <div class="map-wrap">
-      <img class="illustrated-map" src="./miyazaki-handdrawn-map.png" alt="宮崎、高千穗與日南海岸手繪旅遊地圖"><span class="map-kanji-fix" aria-hidden="true">高</span>
+      <img class="illustrated-map" src="./miyazaki-handdrawn-map.png" alt="宮崎、高千穗與日南海岸手繪旅遊地圖">
     </div>
     <p class="disclaimer">＊路線圖採手繪旅遊插畫風格，重點呈現高千穗山線、宮崎市區與日南海岸的相對方向；實際導航請直接使用上方每日行程節點右側的 MAP 圖示。</p>
   </div>
