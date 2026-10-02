@@ -749,6 +749,21 @@
   async function syncExpense(e,action='add'){const url=syncUrlEl.value.trim();if(!url)return false;try{const payload={action,expense:{...e,shares:(e.shares||[]).join('、'),createdAt:e.createdAt||new Date().toISOString()}};const result=await postToAppsScript(payload);e.synced=true;e.syncedAt=new Date().toISOString();e.syncState=result.duplicate?'duplicate':'synced';delete e.syncError;return true}catch(err){console.error('Google Sheet sync failed',err);e.synced=false;e.syncState='error';e.syncError=String(err&&err.message?err.message:err);return false}}
   async function syncItems(items,label='待傳'){if(!syncUrlEl.value.trim()){setSyncStatus('請先貼上 Apps Script Web App URL','err');return}if(!items.length){setSyncStatus(`目前沒有${label}帳目`,'ok');return}setSyncStatus(`正在送出・${items.length} 筆${label}帳目…`);let ok=0;for(const e of items){if(await syncExpense(e))ok++}renderExpenses();setSyncStatus(ok===items.length?`已確認同步 ${ok} 筆至 Google Sheet`:(`送出 ${ok}/${items.length} 筆｜`+syncErrorText((items.find(x=>!x.synced)||{}).syncError||'未知錯誤')),ok===items.length?'ok':'err')}
   async function syncPending(){return syncItems(expenses.filter(e=>!e.synced),'待傳')}
+  function normalizeCloudExpense(x){return {...x,shares:Array.isArray(x.shares)?x.shares:String(x.shares||'').split('、').filter(Boolean),amount:Number(x.amount||0),rate:Number(x.rate||1),twd:Number(x.twd||0),actualTwd:(x.actualTwd===''||x.actualTwd==null)?null:Number(x.actualTwd),synced:true,syncState:'synced'}}
+  async function pullCloudExpenses(showStatus=false){
+    if(!syncUrlEl.value.trim()||!navigator.onLine)return false;
+    try{
+      if(showStatus)setSyncStatus('正在取得 Google Sheet 最新帳目…');
+      const result=await postToAppsScript({action:'list'});
+      const cloud=Array.isArray(result.expenses)?result.expenses.map(normalizeCloudExpense):[];
+      const cloudIds=new Set(cloud.map(x=>String(x.id)));
+      const localPending=expenses.filter(x=>!x.synced&&!cloudIds.has(String(x.id)));
+      expenses=[...cloud,...localPending];
+      renderExpenses();
+      if(showStatus)setSyncStatus('已取得雲端最新帳目・共 '+cloud.length+' 筆','ok');
+      return true;
+    }catch(err){console.error('Cloud pull failed',err);if(showStatus)setSyncStatus(syncErrorText(err)+'・仍使用本機資料','err');return false}
+  }
   async function retryAll(){expenses.forEach(e=>{e.synced=false;e.syncState='retry'});renderExpenses();return syncItems([...expenses],'重新同步')}
   document.getElementById('addExpense').addEventListener('click',async()=>{const name=document.getElementById('expName').value.trim(),amount=parseFloat(document.getElementById('expAmount').value),currency=document.getElementById('expCurrency').value,method=document.getElementById('expMethod').value,payer=document.getElementById('expPayer').value,shares=[...document.querySelectorAll('.sharePerson:checked')].map(x=>x.value);if(!name||!Number.isFinite(amount)||!shares.length)return;const rate=currency==='JPY'?(parseFloat(rateEls[method].value)||0):1;const item={id:uid(),date:document.getElementById('expDate').value,category:document.getElementById('expCategory').value,name,amount,currency,method,payer,shares,rate,twd:amount*rate,synced:false,createdAt:new Date().toISOString()};expenses.push(item);document.getElementById('expName').value='';document.getElementById('expAmount').value='';renderExpenses();if(syncUrlEl.value.trim()){setSyncStatus('正在同步最新帳目…');if(await syncExpense(item)){renderExpenses();setSyncStatus('最新帳目已確認寫入 Google Sheet','ok')}else setSyncStatus(syncErrorText(item.syncError||'未知錯誤')+'・帳目已保存在手機','err')}});
   expenseBody.addEventListener('click',async ev=>{
@@ -770,16 +785,17 @@
       }else{expenses.splice(i,1);renderExpenses();setSyncStatus('已刪除本機帳目','ok')}
     }
   }); Object.entries(rateEls).forEach(([k,el])=>el.addEventListener('input',()=>{rates[k]=parseFloat(el.value)||0;localStorage.setItem(rateKey,JSON.stringify(rates));document.getElementById('rateLabel').textContent=methodName(document.getElementById('expMethod').value)})); document.getElementById('expMethod').addEventListener('change',e=>document.getElementById('rateLabel').textContent=methodName(e.target.value));
-  syncUrlEl.addEventListener('change',()=>{localStorage.setItem(syncKey,syncUrlEl.value.trim());setSyncStatus(syncUrlEl.value.trim()?'同步網址已儲存・可開始同步':'尚未設定同步網址・目前會安全保存在本機',syncUrlEl.value.trim()?'ok':'')}); document.getElementById('syncAll').onclick=syncPending;document.getElementById('retrySync').onclick=retryAll;
+  syncUrlEl.addEventListener('change',()=>{localStorage.setItem(syncKey,syncUrlEl.value.trim());setSyncStatus(syncUrlEl.value.trim()?'同步網址已儲存・可開始同步':'尚未設定同步網址・目前會安全保存在本機',syncUrlEl.value.trim()?'ok':'')}); document.getElementById('syncAll').onclick=async()=>{await syncPending();await pullCloudExpenses(true)};document.getElementById('retrySync').onclick=async()=>{await retryAll();await pullCloudExpenses(true)};
   function download(name,text,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
   document.getElementById('exportJson').onclick=()=>download('miyazaki-expenses.json',JSON.stringify(expenses,null,2),'application/json');
   document.getElementById('importJson').onclick=()=>document.getElementById('importJsonFile').click();
   document.getElementById('importJsonFile').addEventListener('change',async ev=>{const f=ev.target.files&&ev.target.files[0];if(!f)return;try{const data=JSON.parse(await f.text());if(!Array.isArray(data))throw new Error('格式不是帳目陣列');if(!confirm('將匯入 '+data.length+' 筆帳目。相同同步 ID 會合併，不會重複。繼續？'))return;const map=new Map(expenses.map(x=>[x.id,x]));data.forEach(x=>{if(x&&x.id)map.set(x.id,{...map.get(x.id),...x})});expenses=[...map.values()];renderExpenses();setSyncStatus('JSON 已還原・未同步帳目會自動補傳','ok');setTimeout(()=>syncPending(),300)}catch(err){alert('JSON 還原失敗：'+err.message)}finally{ev.target.value=''}});document.getElementById('exportCsv').onclick=()=>{const rows=[['日期','分類','項目','付款人','分攤','付款方式','幣別','原幣金額','匯率','TWD','同步'],...expenses.map(e=>[e.date,e.category,e.name,e.payer,(e.shares||[]).join('/'),methodName(e.method),e.currency,e.amount,e.rate,e.twd,e.synced?'已同步':(e.syncState==='error'?'同步失敗':'待同步')])];download('miyazaki-expenses.csv','\ufeff'+rows.map(r=>r.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\n'),'text/csv;charset=utf-8')};
   if(syncUrlEl.value.trim())setSyncStatus('雲端同步已就緒','ok');renderExpenses();
   let autoSyncBusy=false;
-  async function autoSyncPending(){if(autoSyncBusy||!navigator.onLine||!syncUrlEl.value.trim()||!expenses.some(e=>!e.synced))return;autoSyncBusy=true;try{await syncPending()}finally{autoSyncBusy=false}}
+  async function autoSyncPending(){if(autoSyncBusy||!navigator.onLine||!syncUrlEl.value.trim())return;autoSyncBusy=true;try{if(expenses.some(e=>!e.synced))await syncPending();await pullCloudExpenses(false)}finally{autoSyncBusy=false}}
   window.addEventListener('online',()=>setTimeout(autoSyncPending,500));
   document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')setTimeout(autoSyncPending,500)});
+  window.addEventListener('focus',()=>setTimeout(autoSyncPending,500));
   setTimeout(autoSyncPending,1200);
   if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(()=>{});
 </script>
