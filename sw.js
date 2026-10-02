@@ -1,8 +1,8 @@
-const CACHE_NAME = 'miyazaki-2026-v3';
+const CACHE_NAME = 'miyazaki-2026-v4';
 
 const STATIC_FILES = [
   './manifest.json',
-  './miyazaki-handdrawn-map.png'
+  './miyazaki-handdrawn-map.png?v=20261003'
 ];
 
 self.addEventListener('install', event => {
