@@ -196,117 +196,24 @@
   .map-actions .parking-link{margin-top:0;padding:4px 7px;font-size:9.5px;white-space:nowrap;}
   .split-card .map-icon{position:absolute;right:14px;top:14px;width:46px;height:46px;font-size:23px;}
   .split-card.has-map{padding-right:76px;}
-  /* Day 3 分流：沿用原本時間軸的 9px 圓點與 dashed 線，所有線穿過圓心 */
-  .split-wrap{
-    position:relative;
-    margin:2px 0 0;
-    padding:0 0 42px 34px;
-  }
-  .split-wrap::before{
-    content:"";
-    position:absolute;
-    left:8px;
-    top:0;
-    bottom:0;
-    width:1px;
-    background:repeating-linear-gradient(180deg,var(--line) 0 6px,transparent 6px 11px);
-  }
-  .split-grid{
-    position:relative;
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:32px;
-  }
-  /* 主線從左側圓心分岔，水平線停在兩張卡片外，不穿進卡片 */
-  .split-grid::before{
-    content:"";
-    position:absolute;
-    left:-26px;
-    right:calc(50% + 16px);
-    top:50%;
-    height:1px;
-    background:repeating-linear-gradient(90deg,var(--line) 0 6px,transparent 6px 11px);
-    z-index:0;
-  }
-  .split-card{
-    position:relative;
-    z-index:1;
-    border:1px solid var(--line);
-    background:var(--paper-card);
-    padding:18px 18px 16px;
-    border-radius:2px;
-  }
-  /* A/B 圓點固定在各自卡片外側，不進入資訊欄；尺寸完全比照原本 stop */
-  .split-card::before{
-    content:"";
-    position:absolute;
-    left:-53px;
-    top:50%;
-    width:9px;
-    height:9px;
-    transform:translateY(-50%);
-    border-radius:50%;
-    background:var(--sea);
-    border:2px solid var(--paper);
-    box-shadow:0 0 0 1px var(--sea);
-    z-index:3;
-  }
-  .split-card:nth-child(2)::before{
-    left:-22px;
-    right:auto;
-  }
-  /* A 點到 B 點的分岔線，與兩顆圓點中心同高 */
-  .split-card:nth-child(2)::after{
-    content:"";
-    position:absolute;
-    right:100%;
-    top:50%;
-    width:32px;
-    height:1px;
-    background:repeating-linear-gradient(90deg,var(--line) 0 6px,transparent 6px 11px);
-    z-index:0;
-  }
-  /* 分流後在卡片下方合流回主線 */
-  .split-merge{
-    position:absolute;
-    left:4px;
-    bottom:-1px;
-    width:9px;
-    height:9px;
-    border-radius:50%;
-    background:var(--sea);
-    border:2px solid var(--paper);
-    box-shadow:0 0 0 1px var(--sea);
-    z-index:3;
-  }
-  .split-grid::after{
-    content:"";
-    position:absolute;
-    left:8px;
-    right:calc(50% + 16px);
-    bottom:-37px;
-    height:calc(50% + 37px);
-    border-left:0;
-    border-right:1px dashed var(--line);
-    border-bottom:1px dashed var(--line);
-    pointer-events:none;
-    z-index:0;
-  }
-  .split-card .time{margin-bottom:5px}
-  .split-card h4{margin:0 0 6px;font-size:16px}
-  .split-card p{margin:0;color:var(--ink-soft);font-size:13.5px}
-  .split-card .map-icon{position:absolute;right:14px;top:14px;width:46px;height:46px;font-size:23px}
-  .split-card.has-map{padding-right:76px}
-
-  @media(max-width:640px){
-    .stop-row{grid-template-columns:minmax(0,1fr) 48px}
-    .map-icon{width:44px;height:44px;font-size:23px}
-    .split-wrap{padding-left:34px}
-    .split-grid{grid-template-columns:1fr;gap:14px}
-    .split-grid::before,.split-grid::after,.split-card:nth-child(2)::after{display:none}
-    .split-card::before,.split-card:nth-child(2)::before{left:-31px;right:auto}
-    .split-wrap::before{display:block}
-  }
+  /* Day 3 A/B 分流：所有虛線都穿過圓點中心 */
+  .split-wrap{position:relative;margin:2px 0 0;padding:0 0 42px 34px;--axis-x:8px;--dot:9px;--dot-outer:13px;}
+  .split-wrap::before{content:"";position:absolute;left:var(--axis-x);top:0;bottom:0;width:1px;background:repeating-linear-gradient(180deg,var(--line) 0 6px,transparent 6px 11px);}
+  .split-grid{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:32px;}
+  /* 水平分岔線：主軸圓心 -> B 組圓心 */
+  .split-grid::before{content:"";position:absolute;left:-26px;right:50%;top:50%;height:1px;background:repeating-linear-gradient(90deg,var(--line) 0 6px,transparent 6px 11px);z-index:0;}
+  .split-card{position:relative;z-index:1;border:1px solid var(--line);background:var(--paper-card);padding:18px 18px 16px;border-radius:2px;}
+  .split-card::before{content:"";position:absolute;top:50%;width:9px;height:9px;transform:translate(-50%,-50%);border-radius:50%;background:var(--sea);border:2px solid var(--paper);box-shadow:0 0 0 1px var(--sea);z-index:3;}
+  /* A 點中心就是主時間軸 x=8px；卡片起點相對 grid 為 0，主軸為 -26px */
+  .split-card:first-child::before{left:-26px;}
+  /* B 點中心固定在兩欄正中央的分岔軸，不進入 A/B 卡片 */
+  .split-card:nth-child(2)::before{left:-16px;}
+  /* B 組垂直支線由圓心向下，再於底部水平回到主軸；同樣使用原本 dashed 節奏 */
+  .split-card:nth-child(2)::after{content:"";position:absolute;left:-16px;top:50%;bottom:-42px;width:1px;background:repeating-linear-gradient(180deg,var(--line) 0 6px,transparent 6px 11px);z-index:0;}
+  .split-grid::after{content:"";position:absolute;left:-26px;right:50%;bottom:-42px;height:1px;background:repeating-linear-gradient(90deg,var(--line) 0 6px,transparent 6px 11px);z-index:0;}
+  .split-card .time{margin-bottom:5px}.split-card h4{margin:0 0 6px;font-size:16px}.split-card p{margin:0;color:var(--ink-soft);font-size:13.5px}
+  .split-card .map-icon{position:absolute;right:14px;top:14px;width:46px;height:46px;font-size:23px}.split-card.has-map{padding-right:76px}
+  @media(max-width:640px){.stop-row{grid-template-columns:minmax(0,1fr) 48px}.map-icon{width:44px;height:44px;font-size:23px}.split-wrap{padding-left:34px}.split-grid{grid-template-columns:1fr;gap:14px}.split-grid::before,.split-grid::after,.split-card:nth-child(2)::after{display:none}.split-card:first-child::before,.split-card:nth-child(2)::before{left:-26px}.split-wrap::before{display:block}}
 
   /* ---------- flight tickets ---------- */
   .flight-section-title{display:flex;align-items:center;justify-content:space-between;gap:18px;margin:34px 0 14px;}
@@ -384,7 +291,8 @@
   }
 
   /* ---------- map ---------- */
-  .map-wrap{border:1px solid var(--line);background:var(--paper-card);padding:12px;margin-bottom:28px;overflow:hidden;}
+  .map-wrap{position:relative;border:1px solid var(--line);background:var(--paper-card);padding:12px;margin-bottom:28px;overflow:hidden;}
+  .map-kanji-fix{position:absolute;left:14.2%;top:10.5%;z-index:2;font-family:'Shippori Mincho',serif;font-size:clamp(22px,3.1vw,46px);font-weight:700;line-height:1;background:#fbf4e5;padding:0 .08em;transform:rotate(-3deg);color:#3a2d20;}
   .illustrated-map{display:block;width:100%;height:auto;border-radius:2px;}
   .map-list{display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--line); border:1px solid var(--line);}
   .map-list a.spot{
@@ -606,6 +514,10 @@
       <button data-target="d3" data-theme="sea">Day 3・日南海岸</button>
       <button data-target="d4" data-theme="ink">Day 4・返程</button>
     </div>
+    <div class="today-card" id="todayCard">
+      <div><div class="today-k">📍 今日行程</div><div class="today-v" id="todayText">依旅行日期自動顯示今天的行程</div><div class="settle-meta" id="todaySub"></div></div>
+      <button type="button" id="openToday">查看今日行程</button>
+    </div>
 
     <!-- DAY 1 -->
     <div class="day-panel active" id="d1" data-theme="forest">
@@ -643,7 +555,7 @@
       <div class="split-wrap"><div class="split-grid">
         <div class="split-card"><div class="time">A 組・06:30－10:00</div><h4>3106キッチン</h4><p>JR 九州ホテル宮崎館內早餐，以宮崎為中心使用九州七縣食材，適合想輕鬆慢慢吃完再出發的一組。</p></div>
         <div class="split-card has-map"><div class="time">B 組・09:00<span class="status-badge book">已預訂</span></div><h4>森のほとり</h4><p>古民家完全預約制朝定食；你 Gmail 中已確認兩位 09:00 訂位，分別是銀鮭定食與銀鱈西京燒定食，主打炭烤魚與南部鐵器釜飯。</p><a class="map-icon" href="https://www.google.com/maps/search/?api=1&query=宮崎市清武町船引7303-2" target="_blank">🍚<small>MAP</small></a></div>
-      </div><span class="split-merge" aria-hidden="true"></span></div>
+      </div></div>
       <div class="trail">
         <div class="stop"><div class="stop-row"><div><div class="time">11:00</div><h4>兩組會合・出發日南海岸</h4><p>早餐行程在 JR 九州ホテル宮崎匯流，四人集合後沿海岸公路一路往南，正式進入日南海岸線。</p></div><a class="map-icon" href="https://www.google.com/maps/search/?api=1&query=JR九州ホテル宮崎" target="_blank">🏨<small>MAP</small></a></div></div>
         <div class="stop"><div class="stop-row"><div><div class="time">12:00</div><h4>鵜戶神宮</h4><p>朱紅色本殿建在海蝕洞內，是日本少見「往下走」參拜的神社；海崖、浪花與洞窟構成日南海岸代表景觀。</p></div><div class="map-actions"><a class="map-icon" href="https://www.google.com/maps/search/?api=1&query=鵜戸神宮" target="_blank">⛩️<small>MAP</small></a><a class="parking-link" href="https://maps.app.goo.gl/NCjdWJyYMrg3wMw69" target="_blank">🅿 停車場 MAP</a></div></div></div>
@@ -653,7 +565,7 @@
       <div class="split-wrap" style="margin-top:28px"><div class="split-grid">
         <div class="split-card has-map"><div class="time">A 組・17:30<span class="status-badge walkin">不可預訂・先到先吃</span></div><h4>おぐら 瀬頭店</h4><p>宮崎雞肉南蠻代表名店之一，炸雞配上酸甜南蠻醋與濃厚塔塔醬，是最經典的宮崎 B 級美食；採先到先吃。</p><a class="map-icon" href="https://maps.app.goo.gl/11VDcAuR3Qhf7AWx7" target="_blank" title="おぐら 瀬頭店">🍗<small>MAP</small></a></div>
         <div class="split-card has-map"><div class="time">B 組・20:00<span class="status-badge book">已預訂・2 人</span></div><h4>橘通りミヤチク APAS</h4><p>宮崎牛專門店，可選燒肉或鐵板燒。Gmail 已確認 10/11 20:00、2 人、鐵板燒吧台席，當天現場點餐。</p><a class="map-icon" href="https://www.google.com/maps/search/?api=1&query=橘通りミヤチクAPAS" target="_blank" title="橘通りミヤチク APAS">🥩<small>MAP</small></a></div>
-      </div><span class="split-merge" aria-hidden="true"></span></div>
+      </div></div>
       <div class="trail"><div class="stop"><div class="stop-row"><div><div class="time">晚間</div><h4>各組用餐後回飯店</h4><p>最後一晚自由收尾，回 JR 九州ホテル宮崎整理行李與戰利品，準備隔日上午還車返台。</p></div><a class="map-icon" href="https://www.google.com/maps/search/?api=1&query=JR九州ホテル宮崎" target="_blank">🏨<small>MAP</small></a></div></div></div>
     </div>
 
@@ -764,7 +676,7 @@
     </div>
 
     <div class="map-wrap">
-      <img class="illustrated-map" src="./miyazaki-handdrawn-map.png" alt="宮崎、高千穗與日南海岸手繪旅遊地圖">
+      <img class="illustrated-map" src="./miyazaki-handdrawn-map.png" alt="宮崎、高千穗與日南海岸手繪旅遊地圖"><span class="map-kanji-fix" aria-hidden="true">高</span>
     </div>
     <p class="disclaimer">＊路線圖採手繪旅遊插畫風格，重點呈現高千穗山線、宮崎市區與日南海岸的相對方向；實際導航請直接使用上方每日行程節點右側的 MAP 圖示。</p>
   </div>
@@ -834,9 +746,21 @@
     if(target){const panel=document.getElementById(target),heading=panel?.querySelector('.day-heading h3')?.textContent||'';text.textContent='今天：'+heading;sub.textContent='點右側按鈕可直接切到今天的完整時間軸';btn.dataset.target=target}
     else{text.textContent='旅行日期：2026/10/09－10/12';sub.textContent='出發後會自動顯示當天行程';btn.textContent='查看 Day 1';btn.dataset.target='d1'}
   }
-  document.getElementById('openToday').addEventListener('click',()=>{const target=document.getElementById('openToday').dataset.target||'d1',tab=[...tabs].find(x=>x.dataset.target===target);if(tab)tab.click();document.getElementById(target)?.scrollIntoView({behavior:'smooth',block:'start'})});
-  showTodayMode();
+  const openTodayBtn=document.getElementById('openToday');
+  if(openTodayBtn){openTodayBtn.addEventListener('click',()=>{const target=openTodayBtn.dataset.target||'d1',tab=[...tabs].find(x=>x.dataset.target===target);if(tab)tab.click();document.getElementById(target)?.scrollIntoView({behavior:'smooth',block:'start'});});showTodayMode();}
 
+  // ---- expense shortcut buttons (delegated; independent from ledger initialization) ----
+  document.addEventListener('click',function(ev){
+    const btn=ev.target.closest('.expense-shortcuts button[data-quick]');
+    if(!btn)return;
+    const nameEl=document.getElementById('expName'),catEl=document.getElementById('expCategory'),amountEl=document.getElementById('expAmount');
+    if(!nameEl||!catEl||!amountEl)return;
+    nameEl.value=btn.getAttribute('data-quick')||'';
+    catEl.value=btn.getAttribute('data-cat')||'其他';
+    amountEl.scrollIntoView({behavior:'smooth',block:'center'});
+    setTimeout(()=>amountEl.focus(),200);
+  });
+  
   // ---- checklist ----
   const checklist = {
     '證件與票券': ['護照（效期6個月以上）','機票電子憑證 IT742／IT743','國際駕照＋台灣駕照正本','飯店訂房確認信','租車預約確認信'],
@@ -958,7 +882,6 @@
   }
   async function retryAll(){expenses.forEach(e=>{if(!e.synced){e.syncState='retry'}});renderExpenses();return syncItems(expenses.filter(e=>!e.synced),'重新同步')}
   document.getElementById('addExpense').addEventListener('click',async()=>{const name=document.getElementById('expName').value.trim(),amount=parseFloat(document.getElementById('expAmount').value),currency=document.getElementById('expCurrency').value,method=document.getElementById('expMethod').value,payer=document.getElementById('expPayer').value,shares=[...document.querySelectorAll('.sharePerson:checked')].map(x=>x.value),actualRaw=document.getElementById('expActualTwd').value.trim();if(!name||!Number.isFinite(amount)||!shares.length)return;const rate=currency==='JPY'?(parseFloat(rateEls[method].value)||0):1;const actualTwd=method!=='cash'&&actualRaw!==''?Number(actualRaw):null;if(actualRaw!==''&&!Number.isFinite(actualTwd)){alert('請輸入有效的實際入帳金額');return}const item={id:uid(),date:document.getElementById('expDate').value,category:document.getElementById('expCategory').value,name,amount,currency,method,payer,shares,rate,twd:amount*rate,actualTwd,synced:false,createdAt:new Date().toISOString()};expenses.push(item);document.getElementById('expName').value='';document.getElementById('expAmount').value='';document.getElementById('expActualTwd').value='';renderExpenses();if(syncUrlEl.value.trim()){setSyncStatus('正在同步最新帳目…');if(await syncExpense(item)){renderExpenses();setSyncStatus('最新帳目已確認寫入 Google Sheet','ok')}else setSyncStatus(syncErrorText(item.syncError||'未知錯誤')+'・帳目已保存在手機','err')}});
-  document.querySelectorAll('.expense-shortcuts button[data-quick]').forEach(function(btn){btn.addEventListener('click',function(){const nameEl=document.getElementById('expName');const catEl=document.getElementById('expCategory');const amountEl=document.getElementById('expAmount');nameEl.value=btn.getAttribute('data-quick')||'';catEl.value=btn.getAttribute('data-cat')||'其他';amountEl.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(function(){amountEl.focus()},250)})});
   const methodEl=document.getElementById('expMethod'),actualEl=document.getElementById('expActualTwd');function toggleActualField(){actualEl.classList.toggle('show',methodEl.value!=='cash')}methodEl.addEventListener('change',toggleActualField);toggleActualField();
     expenseBody.addEventListener('click',async ev=>{
     const btn=ev.target.closest('button[data-i]'); if(!btn)return;
