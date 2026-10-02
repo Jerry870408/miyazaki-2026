@@ -1,9 +1,10 @@
-const CACHE_NAME = 'miyazaki-2026-v1';
+const CACHE_NAME = 'miyazaki-2026-v2';
 
 const FILES_TO_CACHE = [
   './',
   './index.html',
-  './manifest.json'
+  './manifest.json',
+  './miyazaki-handdrawn-map.png'
 ];
 
 self.addEventListener('install', event => {
@@ -24,21 +25,27 @@ self.addEventListener('activate', event => {
       )
     )
   );
-
   self.clients.claim();
 });
 
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
 
+  const requestUrl = new URL(event.request.url);
+
+  // 只處理本站資源。Google Apps Script 等跨網域請求直接交給瀏覽器，
+  // 避免 iPhone Safari / PWA 被 Service Worker 攔截。
+  if (requestUrl.origin !== self.location.origin) return;
+
   event.respondWith(
     fetch(event.request)
       .then(response => {
-        const copy = response.clone();
-
-        caches.open(CACHE_NAME)
-          .then(cache => cache.put(event.request, copy));
-
+        if (response && response.ok) {
+          const copy = response.clone();
+          caches.open(CACHE_NAME)
+            .then(cache => cache.put(event.request, copy))
+            .catch(() => {});
+        }
         return response;
       })
       .catch(() => caches.match(event.request))
