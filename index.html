@@ -196,20 +196,117 @@
   .map-actions .parking-link{margin-top:0;padding:4px 7px;font-size:9.5px;white-space:nowrap;}
   .split-card .map-icon{position:absolute;right:14px;top:14px;width:46px;height:46px;font-size:23px;}
   .split-card.has-map{padding-right:76px;}
-  .split-wrap{position:relative;margin:2px 0 0 0;padding:0 0 46px 34px;}
-  .split-wrap::before{content:"";position:absolute;left:8px;top:0;bottom:0;border-left:1px dashed var(--line);}
-  .split-grid{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:18px;}
-  .split-grid::before{content:"";position:absolute;left:-26px;right:50%;top:50%;border-top:1px dashed var(--line);z-index:0;}
-  .split-grid::after{content:"";position:absolute;left:50%;right:0;bottom:-23px;border-bottom:1px dashed var(--line);border-right:1px dashed var(--line);height:calc(50% + 23px);z-index:0;pointer-events:none;}
-  .split-card{position:relative;z-index:1;border:1px solid var(--line);background:var(--paper-card);padding:18px 18px 16px;border-radius:2px;}
-  .split-card::before{content:"";position:absolute;left:-31px;top:50%;width:9px;height:9px;transform:translateY(-50%);border-radius:50%;background:var(--sea);border:2px solid var(--paper);box-shadow:0 0 0 1px var(--sea);}
-  .split-card:nth-child(2)::before{left:auto;right:calc(100% + 22px);}
-  .split-merge{position:absolute;left:3px;bottom:-1px;width:11px;height:11px;border-radius:50%;background:var(--sea);border:2px solid var(--paper);box-shadow:0 0 0 1px var(--sea);z-index:2;}
-  .split-card .time{margin-bottom:5px}.split-card h4{margin:0 0 6px;font-size:16px}.split-card p{margin:0;color:var(--ink-soft);font-size:13.5px;}
-  .trail{position:relative;padding-left:34px;}
-  .trail::before{left:8px;}
-  .stop::before{left:-34px;}
-  @media(max-width:640px){.stop-row{grid-template-columns:minmax(0,1fr) 48px}.map-icon{width:44px;height:44px;font-size:23px}.split-wrap{padding-left:34px}.split-grid{grid-template-columns:1fr;gap:12px}.split-grid::before,.split-grid::after{display:none}.split-card::before{left:-31px!important;right:auto!important}.split-wrap::before{display:block}}
+  /* Day 3 分流：沿用原本時間軸的 9px 圓點與 dashed 線，所有線穿過圓心 */
+  .split-wrap{
+    position:relative;
+    margin:2px 0 0;
+    padding:0 0 42px 34px;
+  }
+  .split-wrap::before{
+    content:"";
+    position:absolute;
+    left:8px;
+    top:0;
+    bottom:0;
+    width:1px;
+    background:repeating-linear-gradient(180deg,var(--line) 0 6px,transparent 6px 11px);
+  }
+  .split-grid{
+    position:relative;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:32px;
+  }
+  /* 主線從左側圓心分岔，水平線停在兩張卡片外，不穿進卡片 */
+  .split-grid::before{
+    content:"";
+    position:absolute;
+    left:-26px;
+    right:calc(50% + 16px);
+    top:50%;
+    height:1px;
+    background:repeating-linear-gradient(90deg,var(--line) 0 6px,transparent 6px 11px);
+    z-index:0;
+  }
+  .split-card{
+    position:relative;
+    z-index:1;
+    border:1px solid var(--line);
+    background:var(--paper-card);
+    padding:18px 18px 16px;
+    border-radius:2px;
+  }
+  /* A/B 圓點固定在各自卡片外側，不進入資訊欄；尺寸完全比照原本 stop */
+  .split-card::before{
+    content:"";
+    position:absolute;
+    left:-53px;
+    top:50%;
+    width:9px;
+    height:9px;
+    transform:translateY(-50%);
+    border-radius:50%;
+    background:var(--sea);
+    border:2px solid var(--paper);
+    box-shadow:0 0 0 1px var(--sea);
+    z-index:3;
+  }
+  .split-card:nth-child(2)::before{
+    left:-22px;
+    right:auto;
+  }
+  /* A 點到 B 點的分岔線，與兩顆圓點中心同高 */
+  .split-card:nth-child(2)::after{
+    content:"";
+    position:absolute;
+    right:100%;
+    top:50%;
+    width:32px;
+    height:1px;
+    background:repeating-linear-gradient(90deg,var(--line) 0 6px,transparent 6px 11px);
+    z-index:0;
+  }
+  /* 分流後在卡片下方合流回主線 */
+  .split-merge{
+    position:absolute;
+    left:4px;
+    bottom:-1px;
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    background:var(--sea);
+    border:2px solid var(--paper);
+    box-shadow:0 0 0 1px var(--sea);
+    z-index:3;
+  }
+  .split-grid::after{
+    content:"";
+    position:absolute;
+    left:8px;
+    right:calc(50% + 16px);
+    bottom:-37px;
+    height:calc(50% + 37px);
+    border-left:0;
+    border-right:1px dashed var(--line);
+    border-bottom:1px dashed var(--line);
+    pointer-events:none;
+    z-index:0;
+  }
+  .split-card .time{margin-bottom:5px}
+  .split-card h4{margin:0 0 6px;font-size:16px}
+  .split-card p{margin:0;color:var(--ink-soft);font-size:13.5px}
+  .split-card .map-icon{position:absolute;right:14px;top:14px;width:46px;height:46px;font-size:23px}
+  .split-card.has-map{padding-right:76px}
+
+  @media(max-width:640px){
+    .stop-row{grid-template-columns:minmax(0,1fr) 48px}
+    .map-icon{width:44px;height:44px;font-size:23px}
+    .split-wrap{padding-left:34px}
+    .split-grid{grid-template-columns:1fr;gap:14px}
+    .split-grid::before,.split-grid::after,.split-card:nth-child(2)::after{display:none}
+    .split-card::before,.split-card:nth-child(2)::before{left:-31px;right:auto}
+    .split-wrap::before{display:block}
+  }
 
   /* ---------- flight tickets ---------- */
   .flight-section-title{display:flex;align-items:center;justify-content:space-between;gap:18px;margin:34px 0 14px;}
