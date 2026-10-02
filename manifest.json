@@ -1,0 +1,10 @@
+{
+  "name":"宮崎 4 天 3 夜自駕行程手冊",
+  "short_name":"宮崎旅行",
+  "start_url":"./index.html",
+  "display":"standalone",
+  "background_color":"#F2EDE0",
+  "theme_color":"#243A2C",
+  "lang":"zh-Hant-TW",
+  "description":"宮崎四天三夜自駕行程、地圖與四人旅行記帳"
+}
