@@ -754,16 +754,16 @@
   async function pullCloudExpenses(showStatus=false){
     if(!syncUrlEl.value.trim()||!navigator.onLine)return false;
     try{
-      if(showStatus)setSyncStatus('正在取得 Google Sheet 最新帳目…');
+      setSyncStatus('正在取得 Google Sheet 最新帳目…');
       const result=await fetchCloudList();
       const cloud=Array.isArray(result.expenses)?result.expenses.map(normalizeCloudExpense):[];
       const cloudIds=new Set(cloud.map(x=>String(x.id)));
       const localPending=expenses.filter(x=>!x.synced&&!cloudIds.has(String(x.id)));
       expenses=[...cloud,...localPending];
       renderExpenses();
-      if(showStatus)setSyncStatus('已取得雲端最新帳目・共 '+cloud.length+' 筆','ok');
+      setSyncStatus('已取得雲端最新帳目・共 '+cloud.length+' 筆','ok');
       return true;
-    }catch(err){console.error('Cloud pull failed',err);if(showStatus)setSyncStatus(syncErrorText(err)+'・仍使用本機資料','err');return false}
+    }catch(err){console.error('Cloud pull failed',err);setSyncStatus('雲端讀取失敗：'+String(err&&err.message?err.message:err)+'・仍使用本機資料','err');return false}
   }
   async function retryAll(){expenses.forEach(e=>{e.synced=false;e.syncState='retry'});renderExpenses();return syncItems([...expenses],'重新同步')}
   document.getElementById('addExpense').addEventListener('click',async()=>{const name=document.getElementById('expName').value.trim(),amount=parseFloat(document.getElementById('expAmount').value),currency=document.getElementById('expCurrency').value,method=document.getElementById('expMethod').value,payer=document.getElementById('expPayer').value,shares=[...document.querySelectorAll('.sharePerson:checked')].map(x=>x.value);if(!name||!Number.isFinite(amount)||!shares.length)return;const rate=currency==='JPY'?(parseFloat(rateEls[method].value)||0):1;const item={id:uid(),date:document.getElementById('expDate').value,category:document.getElementById('expCategory').value,name,amount,currency,method,payer,shares,rate,twd:amount*rate,synced:false,createdAt:new Date().toISOString()};expenses.push(item);document.getElementById('expName').value='';document.getElementById('expAmount').value='';renderExpenses();if(syncUrlEl.value.trim()){setSyncStatus('正在同步最新帳目…');if(await syncExpense(item)){renderExpenses();setSyncStatus('最新帳目已確認寫入 Google Sheet','ok')}else setSyncStatus(syncErrorText(item.syncError||'未知錯誤')+'・帳目已保存在手機','err')}});
