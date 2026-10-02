@@ -337,7 +337,39 @@
   .hotel-windows{position:absolute;left:8%;right:8%;top:78px;bottom:22px;background:repeating-linear-gradient(90deg,transparent 0 8%,#86a5a4 8% 12%,transparent 12% 20%),repeating-linear-gradient(0deg,transparent 0 38%,rgba(36,58,44,.18) 38% 42%,transparent 42% 70%)}
   .hotel-art .palm{position:absolute;font-size:52px;bottom:4px}.hotel-art .p1{left:12px}.hotel-art .p2{right:12px}.hotel-notes{padding:26px}.hotel-notes h4{margin:0 0 14px;color:var(--forest-deep)}.hotel-notes .note{padding:12px 0;border-bottom:1px dashed var(--line);font-size:13.5px;color:var(--ink-soft)}.hotel-notes .note:last-child{border-bottom:0}.hotel-notes b{color:var(--ink)}
   .expense-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}.expense-stat{border:1px solid var(--line);background:var(--paper-card);padding:18px}.expense-stat .k{font-size:12px;color:var(--ink-soft)}.expense-stat .v{font:700 25px 'Shippori Mincho',serif;color:var(--forest-deep);margin-top:5px}.fx-panel,.split-panel{border:1px solid var(--line);background:var(--paper-card);padding:18px;margin:14px 0}.fx-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.fx-card{border:1px dashed var(--line);padding:12px;background:#fffdf7}.fx-card strong{display:block;color:var(--forest-deep);margin-bottom:5px}.fx-card input{width:100%;padding:7px;border:1px solid var(--line);margin-top:6px}.fx-card a{font-size:12px;color:var(--sea);text-decoration:none}.people-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.person-card{border:1px solid var(--line);padding:12px;background:#fffdf7}.person-card .amount{font-weight:700;color:var(--forest-deep);font-size:19px}.settlement{margin-top:12px;padding:12px;background:#eef3e8;border-left:4px solid var(--forest)}.expense-form{display:grid;grid-template-columns:120px 130px 1fr 120px 100px 120px 120px auto;gap:8px;margin:18px 0}.expense-form input,.expense-form select{width:100%;padding:10px;border:1px solid var(--line);background:#fffdf7;font:inherit}.expense-form button,.expense-delete{border:0;background:var(--forest-deep);color:#fff;padding:9px 14px;cursor:pointer}.expense-delete{background:transparent;color:var(--ink-soft);font-size:18px}.expense-table-wrap{overflow-x:auto}.expense-table{width:100%;border-collapse:collapse;min-width:720px;font-size:13px}.expense-table th,.expense-table td{border:1px solid var(--line);padding:9px 10px;text-align:left}.expense-table th{background:#EFE9D9;color:var(--forest-deep)}.expense-table td.num{text-align:right}.expense-note{font-size:12px;color:var(--ink-soft);margin-top:10px}.sync-panel{border:1px solid var(--line);background:#f8f4e9;padding:16px;margin:14px 0;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:end}.sync-panel input{width:100%;padding:9px;border:1px solid var(--line);background:#fffdf7}.sync-actions{display:flex;gap:8px;flex-wrap:wrap}.sync-btn{border:0;background:var(--sea-deep);color:white;padding:9px 13px;cursor:pointer}.sync-status{font-size:12px;margin-top:7px;color:var(--ink-soft)}.sync-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#d99b43;margin-right:5px}.sync-dot.ok{background:#4f6b4b}.sync-dot.err{background:#a84f43}.expense-sync{font-size:11px;white-space:nowrap}.quick-actions{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.quick-actions button{border:1px solid var(--line);background:#fffdf7;padding:7px 10px;cursor:pointer}
-  @media(max-width:760px){.hotel-sketch{grid-template-columns:1fr}.expense-summary{grid-template-columns:1fr}.expense-form{grid-template-columns:1fr 1fr}.expense-form .wide{grid-column:1/-1}}
+  @media(max-width:760px){
+    .hotel-sketch{grid-template-columns:1fr}
+    .expense-summary{grid-template-columns:1fr 1fr;gap:8px}
+    .expense-stat{padding:12px}
+    .expense-stat .v{font-size:18px}
+    .fx-grid,.people-grid{grid-template-columns:1fr 1fr}
+    .expense-form{grid-template-columns:1fr 1fr;gap:8px}
+    .expense-form .wide{grid-column:1/-1}
+    #expName{font-size:16px}
+    #expAmount{font-size:18px;font-weight:700}
+    #addExpense{grid-column:1/-1;min-height:46px;font-size:16px}
+    .sync-panel{grid-template-columns:1fr;gap:10px}
+    .sync-actions{display:grid;grid-template-columns:1fr 1fr}
+    .sync-actions .sync-btn:last-child{grid-column:1/-1;text-align:center}
+    .quick-actions{display:grid;grid-template-columns:1fr 1fr}
+    .quick-actions button{min-height:40px}
+    .expense-table-wrap{overflow:visible}
+    .expense-table{min-width:0;border:0}
+    .expense-table thead{display:none}
+    .expense-table,.expense-table tbody,.expense-table tr,.expense-table td{display:block;width:100%}
+    .expense-table tr{position:relative;margin:0 0 12px;padding:12px 42px 10px 12px;border:1px solid var(--line);background:#fffdf7;border-radius:10px}
+    .expense-table td{border:0;padding:2px 0;text-align:left!important}
+    .expense-table td:nth-child(1),.expense-table td:nth-child(2){display:inline-block;width:auto;margin-right:7px;font-size:12px;color:var(--ink-soft)}
+    .expense-table td:nth-child(3){font-size:16px;font-weight:700;margin:3px 0 6px;color:var(--forest-deep)}
+    .expense-table td:nth-child(4),.expense-table td:nth-child(5),.expense-table td:nth-child(6),.expense-table td:nth-child(7),.expense-table td:nth-child(8){display:inline;font-size:12px;color:var(--ink-soft)}
+    .expense-table td:nth-child(4)::after,.expense-table td:nth-child(5)::after,.expense-table td:nth-child(6)::after,.expense-table td:nth-child(7)::after{content:' · '}
+    .expense-table td:nth-child(9){font-size:17px;font-weight:700;margin-top:7px}
+    .expense-table td:nth-child(10){font-size:11px;margin-top:4px}
+    .expense-table td:nth-child(11){position:absolute;right:7px;top:7px;width:34px}
+    .expense-table td:nth-child(11) .expense-actual{position:absolute;right:34px;top:0;white-space:nowrap}
+    .expense-table td:nth-child(11) .expense-delete{position:absolute;right:0;top:0}
+    .expense-note{line-height:1.55}
+  }
 </style>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#243A2C">
@@ -661,7 +693,7 @@
     <div class="split-panel"><h3>👨‍👩‍👧‍👦 四人分帳</h3><div class="people-grid" id="peopleSummary"></div><div class="settlement" id="settlement">新增支出後，這裡會自動算出最少轉帳方式。</div></div>
     <div class="expense-form"><input id="expDate" type="date"><select id="expCategory"><option>機票</option><option>住宿</option><option>租車</option><option>交通</option><option>餐飲</option><option>景點活動</option><option>購物</option><option>其他</option></select><input class="wide" id="expName" placeholder="項目名稱，例如：高千穗小火車"><input id="expAmount" type="number" min="0" placeholder="金額"><select id="expCurrency"><option value="TWD">TWD</option><option value="JPY">JPY</option></select><select id="expMethod"><option value="cash">現金・臺銀</option><option value="visa">Visa</option><option value="mc">Mastercard</option><option value="jcb">JCB</option></select><select id="expPayer"><option>俊賢</option><option>皓皓</option><option>媽媽</option><option>叔叔</option></select><button id="addExpense" type="button">＋ 新增</button></div>
     <div style="margin:-8px 0 16px;font-size:13px"><strong>分攤給：</strong> <label><input type="checkbox" class="sharePerson" value="俊賢" checked> 俊賢</label>　<label><input type="checkbox" class="sharePerson" value="皓皓" checked> 皓皓</label>　<label><input type="checkbox" class="sharePerson" value="媽媽" checked> 媽媽</label>　<label><input type="checkbox" class="sharePerson" value="叔叔" checked> 叔叔</label>　<small>（例如只有兩人吃晚餐，就只勾那兩人）</small></div>
-    <div class="quick-actions"><button id="exportJson" type="button">⬇ 備份 JSON</button><button id="importJson" type="button">⬆ 還原 JSON</button><input id="importJsonFile" type="file" accept="application/json,.json" hidden><button id="exportCsv" type="button">⬇ 匯出 CSV</button><button id="retrySync" type="button">☁ 強制重送全部帳目</button></div><div class="expense-table-wrap"><table class="expense-table"><thead><tr><th>日期</th><th>分類</th><th>項目</th><th>付款人</th><th>分攤</th><th>付款方式</th><th>原幣金額</th><th>匯率</th><th>換算 TWD</th><th>同步</th><th></th></tr></thead><tbody id="expenseBody"></tbody></table></div><p class="expense-note">＊資料會先保存在目前瀏覽器的 localStorage；設定 Apps Script Web App URL 後，每筆新增會等待 Apps Script 回傳成功後才標示「已同步」；若同步失敗，帳目仍會保存在目前瀏覽器並可稍後重試。若舊版曾誤標為已送出，可按「強制重送全部帳目」；Sheet 端會依同步 ID 去除重複。刷卡最終入帳匯率仍取決於卡組織處理／清算日期、發卡銀行海外交易手續費與是否使用 DCC；此處適合旅行中估算與分帳，收到帳單後可再把該筆匯率改成實際入帳值。</p>
+    <div class="mobile-ledger-title" style="font-weight:700;margin:14px 0 8px">🧾 記帳明細</div><div class="quick-actions"><button id="exportJson" type="button">⬇ 備份 JSON</button><button id="importJson" type="button">⬆ 還原 JSON</button><input id="importJsonFile" type="file" accept="application/json,.json" hidden><button id="exportCsv" type="button">⬇ 匯出 CSV</button><button id="retrySync" type="button">☁ 強制重送全部帳目</button></div><div class="expense-table-wrap"><table class="expense-table"><thead><tr><th>日期</th><th>分類</th><th>項目</th><th>付款人</th><th>分攤</th><th>付款方式</th><th>原幣金額</th><th>匯率</th><th>換算 TWD</th><th>同步</th><th></th></tr></thead><tbody id="expenseBody"></tbody></table></div><p class="expense-note">＊資料會先保存在目前瀏覽器的 localStorage；設定 Apps Script Web App URL 後，每筆新增會等待 Apps Script 回傳成功後才標示「已同步」；若同步失敗，帳目仍會保存在目前瀏覽器並可稍後重試。若舊版曾誤標為已送出，可按「強制重送全部帳目」；Sheet 端會依同步 ID 去除重複。刷卡最終入帳匯率仍取決於卡組織處理／清算日期、發卡銀行海外交易手續費與是否使用 DCC；此處適合旅行中估算與分帳，收到帳單後可再把該筆匯率改成實際入帳值。</p>
   </div>
 </section>
 
