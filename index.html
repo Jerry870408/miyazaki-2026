@@ -419,6 +419,16 @@ section.block>.wrap{position:relative;z-index:1}.block-head .tag::before{content
 .nav-btn.park.parking-link::before{width:27px!important;height:27px!important;flex-basis:27px!important}
 @media(max-width:560px){.map-icon,.parking-link{min-width:104px!important}.nav-btn.place,.nav-btn.park{min-width:145px!important}}
 
+
+/* ===== Mobile itinerary action row: Complete + MAP + Parking ===== */
+.stop-action-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:9px}
+.stop-action-row .stop-complete{margin-top:0!important;height:28px!important;box-sizing:border-box!important;padding:0 10px!important}
+.stop-action-row .map-icon,.stop-action-row .parking-link{position:static!important;inset:auto!important;transform:none!important;width:auto!important;min-width:0!important;height:28px!important;box-sizing:border-box!important;margin:0!important;padding:0 9px!important;border-radius:999px!important;box-shadow:none!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:5px!important;white-space:nowrap!important;font-size:13px!important}
+.stop-action-row .map-icon small{display:inline!important;margin:0!important;font-size:10px!important;line-height:1!important;font-weight:900!important}
+.stop-action-row .parking-link{font-size:10px!important}
+.stop-action-row .parking-link::before{width:18px!important;height:18px!important;flex:0 0 18px!important;border-radius:4px!important;font-size:11px!important}
+@media(max-width:640px){.stop-row{display:block!important}.stop-row>.map-icon,.stop-row>.map-actions{position:static!important}.stop-action-row{margin-top:9px!important}}
+
 </style>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#234E3D">
@@ -735,7 +745,7 @@ section.block>.wrap{position:relative;z-index:1}.block-head .tag::before{content
 
   // ---- itinerary completion ----
   const tripDoneKey='miyazaki-trip-done-v1';let tripDone={};try{tripDone=JSON.parse(localStorage.getItem(tripDoneKey)||'{}')}catch(_){}
-  document.querySelectorAll('.day-panel .stop').forEach((stop,i)=>{const panel=stop.closest('.day-panel'),key=(panel?panel.id:'day')+'-'+i,btn=document.createElement('button');btn.type='button';btn.className='stop-complete';const paint=()=>{const done=!!tripDone[key];stop.classList.toggle('is-done',done);btn.textContent=done?'✓ 已完成':'✓ 完成'};paint();btn.addEventListener('click',()=>{tripDone[key]=!tripDone[key];localStorage.setItem(tripDoneKey,JSON.stringify(tripDone));paint()});const target=stop.querySelector('.stop-row > div')||stop;target.appendChild(btn)});
+  document.querySelectorAll('.day-panel .stop').forEach((stop,i)=>{const panel=stop.closest('.day-panel'),key=(panel?panel.id:'day')+'-'+i,btn=document.createElement('button');btn.type='button';btn.className='stop-complete';const paint=()=>{const done=!!tripDone[key];stop.classList.toggle('is-done',done);btn.textContent=done?'✓ 已完成':'✓ 完成'};paint();btn.addEventListener('click',()=>{tripDone[key]=!tripDone[key];localStorage.setItem(tripDoneKey,JSON.stringify(tripDone));paint()});const row=document.createElement('div');row.className='stop-action-row';const stopRow=stop.querySelector('.stop-row');const directMap=stopRow?.querySelector(':scope > .map-icon');const mapActions=stopRow?.querySelector(':scope > .map-actions');row.appendChild(btn);if(directMap)row.appendChild(directMap);if(mapActions){[...mapActions.querySelectorAll('.map-icon,.parking-link')].forEach(a=>row.appendChild(a));mapActions.remove()}const target=stopRow?.querySelector(':scope > div:first-child')||stop;target.appendChild(row)});
   // ---- enhanced Today Mode ----
   function refreshTravelToday(){
     document.querySelectorAll('.day-panel .stop').forEach(x=>x.classList.remove('is-past','is-next'));
