@@ -722,7 +722,6 @@ section.block>.wrap{position:relative;z-index:1}.block-head .tag::before{content
   const tripDoneKey='miyazaki-trip-done-v1';let tripDone={};try{tripDone=JSON.parse(localStorage.getItem(tripDoneKey)||'{}')}catch(_){}
   document.querySelectorAll('.day-panel .stop').forEach((stop,i)=>{const panel=stop.closest('.day-panel'),key=(panel?panel.id:'day')+'-'+i,btn=document.createElement('button');btn.type='button';btn.className='stop-complete';const paint=()=>{const done=!!tripDone[key];stop.classList.toggle('is-done',done);btn.textContent=done?'✓ 已完成':'✓ 完成'};paint();btn.addEventListener('click',()=>{tripDone[key]=!tripDone[key];localStorage.setItem(tripDoneKey,JSON.stringify(tripDone));paint()});const target=stop.querySelector('.stop-row > div')||stop;target.appendChild(btn)});
   // ---- enhanced Today Mode ----
-  const tripDays={'10-09':'d1','10-10':'d2','10-11':'d3','10-12':'d4'};
   function refreshTravelToday(){
     document.querySelectorAll('.day-panel .stop').forEach(x=>x.classList.remove('is-past','is-next'));
     const now=new Date(),key=String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0'),id=tripDays[key];
