@@ -404,6 +404,21 @@ section.block>.wrap{position:relative;z-index:1}.block-head .tag::before{content
 .today-travel{margin:0 auto 34px;border:1px solid #B9D7D8;background:linear-gradient(120deg,#F7F8E8,#E8F6F7);padding:18px 20px;display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;box-shadow:0 8px 24px rgba(35,78,61,.05)}.today-travel .badge{font-size:10px;font-weight:900;letter-spacing:.12em;color:#fff;background:var(--mango);padding:5px 8px;border-radius:999px}.today-travel .next-label{font-size:10px;color:var(--sea-deep);font-weight:900;letter-spacing:.1em}.today-travel .next-main{font-family:'Shippori Mincho',serif;color:var(--forest-deep);font-size:18px;font-weight:700}.today-travel .next-sub{font-size:12px;color:var(--ink-soft);margin-top:2px}.today-travel button{border:0;background:var(--sea-deep);color:#fff;border-radius:10px;padding:10px 14px;font-weight:800;cursor:pointer}.stop.is-past{opacity:.48}.stop.is-next{background:linear-gradient(90deg,rgba(244,184,63,.10),transparent);margin-left:-12px;padding-left:12px}
 @media(max-width:820px){.important-grid{grid-template-columns:1fr 1fr}.stay-new,.rental-new{grid-template-columns:1fr}.rental-steps{grid-template-columns:1fr}}@media(max-width:640px){section.block::before{top:18px;height:64px;opacity:.34}section.block::after{width:38px;height:38px;top:28px}.today-travel{grid-template-columns:1fr auto}.today-travel .badge{grid-column:1/-1;justify-self:start}}@media(max-width:560px){.important-grid{grid-template-columns:1fr}.stay-new-main,.stay-new-side,.rental-new-main,.rental-new-side{padding:20px}.stop h4{font-size:17.5px}.stop .time{font-size:15px;color:var(--sea-deep)}}
 
+
+/* ===== Unified compact MAP actions ===== */
+.map-actions{display:flex!important;flex-direction:column!important;align-items:center!important;gap:6px!important}
+.map-icon{width:auto!important;height:38px!important;min-width:108px!important;padding:0 11px!important;border:1px solid #A9D7E4!important;background:#EAF7FA!important;border-radius:9px!important;box-shadow:none!important;transform:none!important;display:inline-flex!important;align-items:center!important;justify-content:flex-start!important;gap:8px!important;font-size:20px!important;white-space:nowrap!important}
+.map-icon small{display:inline!important;margin:0!important;font-size:11px!important;line-height:1!important;font-weight:900!important;color:var(--sea-deep)!important}
+.parking-link{height:38px!important;min-width:108px!important;box-sizing:border-box!important;padding:0 11px!important;border-radius:9px!important;margin-top:0!important;justify-content:flex-start!important;gap:8px!important;font-size:11px!important;white-space:nowrap!important}
+.parking-link::before{width:25px!important;height:25px!important;flex:0 0 25px!important;border-radius:5px!important;font-size:15px!important}
+.split-card .map-icon{width:auto!important;height:38px!important;right:14px!important;top:14px!important;font-size:20px!important}
+.nav-btn{height:42px!important;box-sizing:border-box!important;padding:0 12px!important;border-radius:9px!important;font-size:12px!important}
+.nav-btn.place{min-width:150px!important;justify-content:flex-start!important}
+.nav-btn.park{min-width:150px!important;justify-content:flex-start!important}
+.nav-btn.park.parking-link{height:42px!important}
+.nav-btn.park.parking-link::before{width:27px!important;height:27px!important;flex-basis:27px!important}
+@media(max-width:560px){.map-icon,.parking-link{min-width:104px!important}.nav-btn.place,.nav-btn.park{min-width:145px!important}}
+
 </style>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#234E3D">
