@@ -1,8 +1,8 @@
-const CACHE_NAME = 'miyazaki-2026-v5';
+const CACHE_NAME = 'miyazaki-2026-v6';
 
 const STATIC_FILES = [
-  './manifest.json?v=20261005',
-  './apple-touch-icon.png?v=20261005',
+  './manifest.json?v=20261005b',
+  './apple-touch-icon.png?v=20261005b',
   './miyazaki-handdrawn-map.png?v=20261003'
 ];
 
