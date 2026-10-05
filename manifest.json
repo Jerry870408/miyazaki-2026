@@ -9,13 +9,13 @@
   "description": "宮崎四天三夜自駕行程、地圖與四人旅行記帳",
   "icons": [
     {
-      "src": "./apple-touch-icon.png?v=20261005",
+      "src": "./apple-touch-icon.png?v=20261005b",
       "sizes": "180x180",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./apple-touch-icon.png?v=20261005",
+      "src": "./apple-touch-icon.png?v=20261005b",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
