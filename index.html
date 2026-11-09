@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
+<script>(function(){try{if(localStorage.getItem('miyazaki-access-v1')==='04080810')return}catch(e){}document.documentElement.classList.add('miyazaki-locked')})();</script>
+<style>html.miyazaki-locked body>:not(#miyazaki-access-gate){display:none!important}#miyazaki-access-gate{position:fixed;inset:0;z-index:2147483647;display:none;align-items:center;justify-content:center;background:#fff8e9;padding:24px;font-family:system-ui,sans-serif;color:#263229}html.miyazaki-locked #miyazaki-access-gate{display:flex}#miyazaki-access-gate .panel{width:min(100%,380px);padding:32px 26px;background:#fffcf4;border:1px solid #e4d8c2;box-shadow:0 12px 40px #26322922;text-align:center}#miyazaki-access-gate h2{color:#234e3d;margin:0 0 12px}#miyazaki-access-gate input{width:100%;box-sizing:border-box;padding:13px;font-size:17px;border:1px solid #aeb7ae;border-radius:4px}#miyazaki-access-gate button{width:100%;padding:13px;margin-top:12px;border:0;border-radius:4px;background:#234e3d;color:#fff;font-size:16px;cursor:pointer}#miyazaki-access-gate .error{color:#b43830;min-height:20px;font-size:13px}</style>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>宮崎 4 天 3 夜自駕行程手冊</title>
@@ -435,6 +437,8 @@ section.block>.wrap{position:relative;z-index:1}.block-head .tag::before{content
   <meta name="theme-color" content="#234E3D">
 </head>
 <body class="paper-texture">
+<div id="miyazaki-access-gate" role="dialog" aria-modal="true" aria-label="旅行手冊密碼驗證"><div class="panel"><h2>宮崎旅行手冊</h2><p>請輸入密碼以查看旅行手冊</p><form id="miyazaki-gate-form"><input id="miyazaki-gate-password" type="password" placeholder="請輸入密碼" autocomplete="current-password" required><button type="submit">進入旅行手冊</button><p class="error" id="miyazaki-gate-error" role="alert"></p></form></div></div>
+<script>document.getElementById('miyazaki-gate-form').addEventListener('submit',function(e){e.preventDefault();const x=document.getElementById('miyazaki-gate-password');if(x.value==='04080810'){try{localStorage.setItem('miyazaki-access-v1','04080810')}catch(e){}document.documentElement.classList.remove('miyazaki-locked');x.value=''}else{document.getElementById('miyazaki-gate-error').textContent='密碼錯誤，請重新輸入';x.value='';x.focus()}})</script>
 
 <div class="topnav"><div class="topnav-inner"><span class="brand">宮崎手冊</span><nav>
 <a class="pill" href="#overview">行程總覽</a><a class="pill" href="#itinerary">每日行程</a><a class="pill" href="#important">重要資訊</a><a class="pill" href="#stay">住宿資訊</a><a class="pill" href="#rental">租車資訊</a><a class="pill" href="#transport">交通攻略</a><a class="pill" href="#map">景點地圖</a><a class="pill" href="#checklist">出發前確認</a><a class="pill" href="#budget">旅行記帳</a>
